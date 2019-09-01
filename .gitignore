@@ -1,3 +1,7 @@
+.idea
+.nuxt
+frontend/config/dev.env.js
+
 # Logs
 logs
 *.log
