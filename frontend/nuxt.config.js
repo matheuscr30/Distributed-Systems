@@ -9,10 +9,10 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   mode: 'universal',
-  env: env,
+  env,
   server: {
     port: 5000,
-    host: 'localhost',
+    host: 'localhost'
   },
   /*
    ** Headers of the page
@@ -21,8 +21,8 @@ module.exports = {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
     meta: [
-      {charset: 'utf-8'},
-      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
@@ -30,14 +30,18 @@ module.exports = {
       }
     ],
     link: [
-      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
-      {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'}
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+      }
     ]
   },
   /*
    ** Customize the progress-bar color
    */
-  loading: {color: colors.deepPurple.darken4},
+  loading: { color: colors.deepPurple.darken4 },
   /*
    ** Global CSS
    */
@@ -65,7 +69,7 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    'cookie-universal-nuxt',
+    'cookie-universal-nuxt'
   ],
   /*
    ** Axios module configuration

@@ -8,7 +8,7 @@ module.exports.get = function (application, req, res) {
 
   if (token) {
     jwt.verify(token, process.env.HASH_SECRET, function (err, decoded) {
-      if (err) return res.status(403).json({auth: false, message: 'Failed to authenticate token.'});
+      if (err) return res.status(403).json({message: 'Failed to authenticate token.'});
       else {
         User.findById(decoded.id, function (err, user) {
           return res.status(200).json({
@@ -18,7 +18,7 @@ module.exports.get = function (application, req, res) {
       }
     });
   } else {
-    return res.status(401).send({auth: false, message: 'No token provided.'});
+    return res.status(401).send({message: 'No token provided.'});
   }
 };
 
@@ -31,7 +31,7 @@ module.exports.post = function (application, req, res) {
 
   if (errors.length !== 0) {
     let errorText = errors[0].msg;
-    return res.status(500).json({message: errorText});
+    return res.status(400).json({message: errorText});
   }
 
   let user = new User({
@@ -57,19 +57,18 @@ module.exports.put = function (application, req, res) {
   let id = req.params.id;
   if (id === '') return res.status(404).json({message: "The object you are looking for was not found"});
 
-  /*//Came From MiddleWare
   let idFromToken = req.decoded.id;
-  if (idFromToken !== id) return res.status(401).json({message: "You are not authorized to access this area"});*/
+  if (idFromToken !== id) return res.status(401).json({message: "You are not authorized to access this area"});
 
   let body = req.body;
-  if (body === "") return res.status(500).json({message: "You need to pass something"});
+  if (body === "") return res.status(400).json({message: "You need to pass something"});
   req.check('username', "Can't change username").isEmpty();
 
   let errors = validationResult(req);
 
   if (errors) {
     let errorText = errors[0].msg;
-    return res.status(500).json({message: errorText});
+    return res.status(400).json({message: errorText});
   }
 
   User.findByIdAndUpdate(id, {
@@ -77,9 +76,9 @@ module.exports.put = function (application, req, res) {
     password: body['password']
   }, {new: true}, function (err, user) {
     if (err) {
-      return res.status(500).send("There was a problem updating the user.");
+      return res.status(400).json({message: "There was a problem updating the user."});
     } else {
-      res.status(200).send(user);
+      res.status(200).json({user});
     }
   });
 };
@@ -88,13 +87,12 @@ module.exports.delete = function (application, req, res) {
   let id = req.params.id;
   if (id === '') return res.status(404).json({message: "The object you are looking for was not found"});
 
-  /*//Came From MiddleWare
   let idFromToken = req.decoded.id;
-  if (idFromToken !== id) return res.status(401).json({message: "You are not authorized to access this area"});*/
+  if (idFromToken !== id) return res.status(401).json({message: "You are not authorized to access this area"});
 
   User.findByIdAndRemove(id, function (err, user) {
     if (err) {
-      res.status(500).json({message: "There was a problem deleting the user."});
+      res.status(400).json({message: "There was a problem deleting the user."});
     } else {
       res.status(200).json(user);
     }

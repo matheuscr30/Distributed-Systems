@@ -16,7 +16,7 @@ export default ({ $axios, store, redirect }) => {
     } = error
 
     if (status === 403 || status === 401) {
-      if (url.includes('token')) {
+      if (url.includes('login')) {
         return Promise.reject({
           error: true
         })

@@ -28,7 +28,10 @@ function verifyToken(req, res, next) {
   if (token) {
     jwt.verify(token, process.env.HASH_SECRET, function (err, decoded) {
       if (err) return res.status(403).json({auth: false, message: 'Failed to authenticate token.'});
-      else next();
+      else {
+        req.decoded = decoded;
+        next();
+      }
     });
   } else {
     return res.status(401).send({auth: false, message: 'No token provided.'});
