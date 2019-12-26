@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+enum USER_TYPE {
+    NOT_SPECIFIED = 0;
+    EMPLOYEE = 1;
+    RECRUITER = 2;
+}
+
+message User {
+    string id = 1;
+    string username = 2;
+    USER_TYPE user_type = 3;
+    string email = 4;
+    string password = 5;
+    string token = 6;
+}
+
+message Message {
+    string id = 1;
+    User user = 2;
+    string message = 3;
+}
+
+message ReplicatedMessage {
+    Message message = 1;
+    repeated Node nodes = 2;
+}
+
+message Match {
+    string id = 1;
+    User recruiter = 2;
+    User employee = 3;
+    int32 recruiter_match = 4;
+    int32 employee_match = 5;
+}
+
+message AuthRequest {
+    string token = 1;
+    string username = 2;
+}
+
+message AuthResponse {
+    User user = 1;
+    repeated Match matches = 2;
+}
+
+message Node {
+    string id = 1;
+    int32 server_id = 2;
+    string host = 3;
+    int32 port = 4;
+    Node predecessor = 5;
+}
+
+message RequestFindSuccessor {
+    string key = 1;
+}
+
+message Empty {}
+
+service API {
+    rpc Authenticate(AuthRequest) returns (AuthResponse) {}
+    rpc RegisterUser(User) returns (AuthResponse) {}
+    rpc LoginUser(User) returns (AuthResponse) {}
+    rpc GetMessages(User) returns (stream Message) {}
+    rpc SendMessage(Message) returns (Message) {}
+    rpc ReplicateMessage(ReplicatedMessage) returns (Empty) {}
+    rpc OfferJob(Match) returns (Match) {}
+    rpc ReplicateOfferJob(Match) returns (Empty) {}
+    rpc GetMatches(User) returns (stream Match) {}
+    rpc AcceptMatch(Match) returns (Match) {}
+    rpc ReplicateAcceptMatch(Match) returns (Empty) {}
+    rpc RejectMatch(Match) returns (Match) {}
+    rpc ReplicateRejectMatch(Match) returns (Empty) {}
+    rpc FindSuccessor(RequestFindSuccessor) returns (Node) {}
+    rpc Notify(Node) returns (Empty) {}
+    rpc GetPredecessor(Empty) returns (Node) {}
+}
