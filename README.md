@@ -1,59 +1,58 @@
-# Trabalho-de-Sistemas-Distribuidos
+# Distributed Systems
 
+A simple distribute system and multiplatform application for matches between devs and recruiters.
 
-                                  Trabalho de Sistemas Distribuídos – Entrega 0
-                                   João Victor da Costa Gonçalves -11711BCC050
-                                   Matheus Cunha Reis - 11521BCC030
+* For communication between client and servers, GRPC is been used, even in internal requests
+* For scale and share data between servers, I implemented a chord ring with servers
+* For efficient saving data, Log Structured Merge Tree is been used in each server
 
+## Installation
 
-    • Introdução
+1. Install Docker
+2. Install Docker-Compose
 
-      O NerdRoom é uma aplicação multiplataforma para encontro de Empresas e Desenvolvedores que desejam diminuir a formalidade na busca de vagas e novos funcionários.
+## Usage
 
-    • Funcionamento
+In this application you can register as 2 users:
+* A Recruiter:
+   * Can send message to the global chat
+   * Match any employee which is talking in the chat
+   * Contact the employee if match is acceptedd
+* An Employee
+   * Can send message to the global chat
+   * Accept/Refuse a match
 
-      Quando um usuário novo acessa o sistema ele deve efetuar o Cadastro e selecionar se sua ocupação é como Recrutador de uma empresa ou Funcionário.
-      Caso ele selecione a opção Recrutador, ele poderá selecionar funcionários para um possível agendamento de entrevistas em um chat compartilhado entre Funcionarios e Recrutadores
-      Caso ele selecione a opção Funcionário, ele poderá interagir neste chat e sua conta poderá receber matches de empresa.
-      A seleção de um Recrutador para com o Funcionario, ou vice-versa é chamada de “Like”, caso ambos deem Like entre si ocorrendo o “Match”.
-      Os Matchs podem ser desfeitos caso o Funcionário não deseje mais tal vaga, ou caso o Recrutador não queira mais prosseguir com o processo seletivo.
+### Start
+To start the application you need to pass 4 flags:
+* Build
+  * hard: Delete images and network from Docker, rebuild again and start the containers
+  * soft: Just start the containers
+* Mode
+  * dae: Run the containers in mode daemon
+  * it: Run the containers in mode interactive
+* Servers: Number of server to build
+* Volumes
+  * keep: Keep the volumes of old running containers
+  * purge: Purge the volumes and create new ones
 
-    • Arquitetura do Software
+```bash
+./build.sh --build build_opt --mode mode_opt --servers nr_servers --volumes volume_opt
+```
 
-      • Aplicação (WebSocket)
-          ◦ Comunicação TCP/IP
-      • Servidor (Express/Node.js)
-      • Json (Arquivo para armazenamento do histórico do chat e das informações de Registro)
-      
-    • Lista de Testes
+### Stop
+```bash
+./stop.sh
+```
+## Used Technologies
+* Python / Flask
+* HTML, CSS, JS
+* Chord (https://en.wikipedia.org/wiki/Chord_(peer-to-peer))
+* Log Structured Merge Tree (LSMT) (https://en.wikipedia.org/wiki/Log-structured_merge-tree)
+* GRPC (https://grpc.io/)
 
-      • Testes de Caixa-Preta (Testes Funcionais)
-          ◦ Verificar se o sistema atende todos os Requisitos Funcionais
-          ◦ Verificar duplicações de Funcionários ou Empresas
-          ◦ Buscar por Funcionários ou Empresas inexistentes
-      • Teste de Concorrência
-          ◦ Verificar se o sistema atende múltiplos usuários sem haver falhas
-      • Teste de Recuperação de Falhas
-          ◦ Verificar se o sistema volta ao último estado com sucesso antes de ocorrer a falha
-      • Teste de Carga
-          ◦ Verificar se o sistema permanece em alta performance mesmo com vários clientes acessando ao mesmo tempo
-          
-    • Histórias de Usuário
+## Authors
 
-        ◦ US001 – Login
-            ▪ Como usuário do sistema eu desejo fazer login para acessar as telas e utilizar o TinderIn
-              
-        ◦ US002 – Cadastro de Funcionário
-            ▪ Como um Funcionário em busca de uma oportunidade de emprego desejo realizar meu cadastro no TinderIn
-              
-        ◦ US003 – Cadastro de Recrutador
-            ▪ Como um Recrutador em busca de novos Funcionários para minha empresa desejo realizar meu cadastro no TinderIn
-              
-        ◦ US004 – Match
-            ▪ Como um Funcionário/Recrutador desejo utilizar a funcionalidade de Like para possiveis ofertas de emprego
-              
-        ◦ US005 – Cancelar Match
-            ▪ Como um Funcionário desejo cancelar o meu Like e não permitir mais que a vaga esteja disponível
-              
-        ◦ US006 – Chat
-            ▪ Como um Funcionário/Recrutador desejo utilizar o chat para me comunicar com outras pessoas
+* **Matheus Cunha Reis** - *creator* - [GitHub](https://github.com/matheuscr30) ✌
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
