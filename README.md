@@ -30,7 +30,7 @@ To start the application you need to pass 4 flags:
 * Mode
   * dae: Run the containers in mode daemon
   * it: Run the containers in mode interactive
-* Servers: Number of server to build
+* Servers: Number of servers to build
 * Volumes
   * keep: Keep the volumes of old running containers
   * purge: Purge the volumes and create new ones
